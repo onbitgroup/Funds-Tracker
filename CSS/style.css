@@ -1,0 +1,486 @@
+/* --- General Reset --- */
+html {
+  height: 100%;
+}
+
+body {
+  font-family: sans-serif;
+  background-color: #f0f2f5;
+  color: #333;
+  margin: 0;
+  height: 100%;
+}
+
+/* --- Main Container --- */
+.container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  background: white;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Full screen height */
+  padding-bottom: 160px; /* prevent overlap with fixed input bar */
+}
+
+/* --- Top Total Display --- */
+.total-display {
+  padding: 20px;
+  background-color: #e9ecef;
+  text-align: center;
+}
+
+#total-amount {
+  color: #28a745;
+  margin: 0;
+}
+
+/* --- Transaction List (Scrollable Middle Section) --- */
+.transaction-list {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+
+th, td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #6c757d;
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  text-align: center;
+  padding: 10px; /* smaller padding */
+  font-size: 14px;
+}
+
+
+.amount-income {
+  color: #28a745;
+}
+
+.amount-outgoing {
+  color: #dc3545;
+}
+
+/* --- Input Area (Bottom Section) --- */
+.input-area {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  max-width: 600px; /* same as container */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: #fff;
+  border-top: 1px solid #ddd;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+  padding: 5px;
+  z-index: 1000;
+}
+
+
+
+input, button {
+  padding: 15px;
+  border: none;
+  font-size: 16px;
+}
+
+input {
+  grid-column: span 2;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #ddd;
+}
+
+#income-btn {
+  background-color: #28a745;
+  color: white;
+  cursor: pointer;
+}
+
+#outgoing-btn {
+  background-color: #dc3545;
+  color: white;
+  cursor: pointer;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 10;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+  background: white;
+  margin: 15% auto;
+  padding: 20px;
+  width: 80%;
+  max-width: 400px;
+  border-radius: 8px;
+}
+
+.close-btn {
+  float: right;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+#modal-note-text {
+  white-space: pre-wrap; /* keeps line breaks */
+  word-wrap: break-word; /* breaks long words */
+}
+
+.loan-option {
+  grid-column: span 1;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+}
+
+#due-date {
+  grid-column: span 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  background: #fff;
+}
+
+.loan-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #ffc107;
+  color: #333;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  z-index: 9999;
+  font-size: 14px;
+  animation: fadeIn 0.5s, fadeOut 0.5s 4.5s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; transform: translateY(-20px); }
+}
+
+.loan-progress-container {
+  margin-top: 5px;
+  background: #eee;
+  border-radius: 5px;
+  height: 10px;
+  overflow: hidden;
+}
+.loan-progress {
+  height: 100%;
+  background: #28a745;
+  width: 0%;
+  transition: width 0.3s;
+}
+.payment-details {
+  font-size: 12px;
+  color: #555;
+  margin-top: 4px;
+}
+
+/* --- Target Progress Bar --- */
+.target-section {
+  padding: 20px;
+  background: #f8f9fa;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.target-progress-container {
+  width: 100%;
+  max-width: 500px;
+  height: 25px;
+  background: #e9ecef;
+  border-radius: 12px;
+  margin: 10px auto;
+  overflow: hidden;
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.target-progress {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #28a745, #5cd65c);
+  transition: width 0.5s ease-in-out;
+}
+
+#progress-text {
+  margin-top: 5px;
+  font-size: 14px;
+  color: #555;
+}
+
+#target-form {
+  margin-top: 10px;
+}
+
+#target-form input {
+  padding: 10px;
+  width: 60%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 5px;
+}
+
+.target-item {
+  background: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.target-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.remove-target-btn {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.remove-target-btn:hover {
+  background: #b02a37;
+}
+
+.progress-container {
+  background: #e0e0e0;
+  border-radius: 5px;
+  overflow: hidden;
+  height: 12px;
+  margin-bottom: 5px;
+}
+
+.progress-bar {
+  background: #28a745;
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  font-size: 0.9em;
+  color: #555;
+}
+
+/* Dropdown header */
+.dropdown-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #007bff;
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.dropdown-header i {
+  transition: transform 0.3s ease;
+}
+
+/* Collapsible content */
+.dropdown-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.3s ease;
+}
+
+.dropdown-content.open {
+  max-height: 1000px; /* big enough to fit contents */
+  padding: 10px 0;
+}
+
+/* Rotate arrow when open */
+.dropdown-header.active i {
+  transform: rotate(180deg);
+}
+
+.loan-due-date {
+  font-size: 12px;
+  color: #777;
+  margin-top: 2px;
+}
+
+
+/* --- Navbar --- */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #007bff;
+  color: white;
+  padding: 10px 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar .logo {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.nav-buttons button {
+  background: white;
+  color: #007bff;
+  border: none;
+  padding: 6px 12px;
+  margin-left: 8px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s ease;
+}
+
+.nav-buttons button:hover {
+  background: #e6e6e6;
+}
+
+#reset-btn {
+  background: #dc3545;
+  color: white;
+}
+#reset-btn:hover {
+  background: #b02a37;
+}
+
+.delete-transaction {
+  cursor: pointer;
+  color: #dc3545;
+  transition: color 0.2s ease;
+}
+.delete-transaction:hover {
+  color: #a71d2a;
+}
+
+
+/* --- Swipe to Delete --- */
+.swipe-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.swipe-content {
+  display: flex;
+  align-items: flex-start;
+  background: #fff;
+  transition: transform 0.3s ease;
+  padding: 10px;
+}
+
+.tx-date {
+  width: 90px;
+  font-size: 13px;
+  white-space: nowrap;
+  color: #333;
+}
+.tx-date small {
+  font-size: 11px;
+  color: #666;
+}
+
+.tx-note {
+  flex-grow: 1;
+  padding: 0 10px;
+}
+
+.tx-amount {
+  width: 100px;
+  text-align: right;
+  font-weight: bold;
+}
+
+.swipe-delete-btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 90px;
+  background: #dc3545;
+  color: white;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+}
+
+.swipe-container.open .swipe-content {
+  transform: translateX(-90px);
+}
+
+.swipe-container.open .swipe-delete-btn {
+  transform: translateX(0);
+}
+
+.datetime-cell {
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.3;
+}
+.datetime-cell small {
+  display: block;
+  font-size: 11px;
+  color: #777;
+}
+
+.remaining-text {
+  font-size: 13px;
+  color: #555;
+}
+
+.target-item.target-complete {
+  background: #28a745; /* green box */
+  color: white;
+  border: 2px solid #1e7e34;
+}
+
+.target-item.target-complete .progress-container {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.target-item.target-complete .progress-bar {
+  background: #fff;
+}
+
+.target-item.target-complete .remove-target-btn {
+  background: #fff;
+  color: #28a745;
+  font-weight: bold;
+}
+.target-item.target-complete .remove-target-btn:hover {
+  background: #e6e6e6;
+}
