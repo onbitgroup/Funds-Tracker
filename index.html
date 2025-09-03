@@ -10,21 +10,48 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="manifest" href="manifest.json">
 
-
-
 </head>
+
 
 <!-- Navbar -->
 <div class="navbar">
-  <h2 class="logo">💰 Funds Tracker</h2>
+  <h2 class="logo">
+    <img src="icons/logo.png" alt="Logo" class="nav-logo">
+  </h2>
   <div class="nav-buttons">
-    <button id="export-btn">Export</button>
+    <button id="export-btn"><i class="fa-solid fa-file-export"></i> Export</button>
     <input type="file" id="import-file" accept=".json" hidden />
-    <button id="import-btn">Import</button>
-    <button id="reset-btn">Reset</button>
+    <button id="import-btn"><i class="fa-solid fa-file-import"></i> Import</button>
+    <button id="reset-btn"><i class="fa-solid fa-rotate-left"></i></button>
   </div>
 </div>
 
+
+<!-- Floating Help Button -->
+<button id="help-btn" class="help-btn">
+  <i class="fa-solid fa-question"></i>
+</button>
+
+
+
+<!-- About Modal -->
+<div id="about-modal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn">&times;</span>
+    <h3>About Funds Tracker</h3>
+	<p>
+	  <strong>Funds Tracker</strong> is created and owned by <strong>Hasni</strong> and his wife <strong>Hindhuja</strong>.  
+	  This app was designed to make it easier to manage savings, track funds, and maintain financial goals in everyday life.  
+	</p><hr>
+
+	<p>
+	  <i class="fa-solid fa-phone"></i> <strong>Contact & Support</strong><br><br>
+	  WhatsApp: <a href="https://wa.me/94784582025" target="_blank" style="color: gray;">+94 784582025</a><br>
+	  Email: <a href="mailto:hasnisubhan@gmail.com" style="color: gray;">hasnisubhan@gmail.com</a>
+	</p>
+
+  </div>
+</div>
 
 <body>
 
@@ -40,7 +67,7 @@
 <!-- Target Goal Section -->
 <div class="target-section">
   <div class="dropdown-header" id="toggle-targets">
-    <h2>🎯 Saving Targets</h2>
+    <h2><i class="fa-solid fa-bullseye"></i> Saving Targets</h2>
     <i class="fas fa-chevron-down"></i>
   </div>
 
@@ -53,7 +80,6 @@
     </div>
   </div>
 </div>
-
 
 
     <!-- Transaction List -->
@@ -77,7 +103,11 @@
       <input type="number" id="amount-input" placeholder="Enter Amount">
 
     <label class="loan-option"><input type="checkbox" id="loan-checkbox"> Loan</label>
-    <input type="date" id="due-date" disabled>
+<div class="date-wrapper">
+  <input type="date" id="due-date" disabled>
+  <i class="fa-solid fa-calendar-days calendar-icon"></i>
+</div>
+
 
 
       <button id="income-btn">Income</button>
