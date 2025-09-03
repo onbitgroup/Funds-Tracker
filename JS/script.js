@@ -281,30 +281,20 @@ document.addEventListener("click", (e) => {
 document.getElementById("export-btn").addEventListener("click", () => {
   const transactions = JSON.parse(localStorage.getItem("transactions")) || [];
   const targets = JSON.parse(localStorage.getItem("targets")) || [];
+
   const data = { transactions, targets };
-  const jsonData = JSON.stringify(data, null, 2);
 
-  // ✅ Check if Web Share API is available
-  if (navigator.share) {
-    navigator.share({
-      title: "Funds Tracker Backup",
-      text: jsonData
-    })
-    .then(() => console.log("✅ Data shared successfully"))
-    .catch(err => console.log("❌ Share failed:", err));
-  } else {
-    // Fallback → Download as file in normal browser
-    const blob = new Blob([jsonData], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
 
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "funds-tracker-backup.json";
-    a.click();
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "funds-tracker-backup.json"; // Suggests filename
+  a.click();
 
-    URL.revokeObjectURL(url);
-  }
+  URL.revokeObjectURL(url);
 });
+
 
 
 
@@ -391,5 +381,6 @@ window.addEventListener("click", (e) => {
     aboutModal.style.display = "none";
   }
 });
+
 
 
