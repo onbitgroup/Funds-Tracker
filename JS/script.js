@@ -101,29 +101,28 @@ function addTransactionToDOM(datetime, note, amount, isLoan = false, dueDate = "
     `;
   }
 
-
-row.innerHTML = `
-  <td colspan="4">
-    <div class="swipe-container" data-datetime="${datetime}">
-      <div class="swipe-content">
-        <div class="tx-date">${datetime ? datetime.split(", ")[0] : ""}<br><small>${datetime ? datetime.split(", ")[1] : ""}</small></div>
-        <div class="tx-note">
-          <span class="note-cell" data-note="${note}">
-            ${shortNote}
-            ${loanActive ? ' <i class="fa-solid fa-bell loan-bell" data-datetime="'+datetime+'"></i>' : ""}
-          </span>
-          ${loanHTML}
+  row.innerHTML = `
+    <td colspan="4">
+      <div class="swipe-container" data-datetime="${datetime}">
+        <div class="swipe-content">
+          <div class="tx-date">${datetime ? datetime.split(", ")[0] : ""}<br><small>${datetime ? datetime.split(", ")[1] : ""}</small></div>
+          <div class="tx-note">
+            <span class="note-cell" data-note="${note}">
+              ${shortNote}
+              ${loanActive ? ' <i class="fa-solid fa-bell loan-bell" data-datetime="'+datetime+'"></i>' : ""}
+            </span>
+            ${loanHTML}
+          </div>
+          <div class="tx-amount ${isIncome ? 'amount-income' : 'amount-outgoing'}">
+            ${parseFloat(amount).toFixed(2)} /=
+          </div>
         </div>
-        <div class="tx-amount ${isIncome ? 'amount-income' : 'amount-outgoing'}">
-          ${parseFloat(amount).toFixed(2)} /=
-        </div>
+        <button class="swipe-delete-btn" data-datetime="${datetime}">Delete</button>
       </div>
-      <button class="swipe-delete-btn" data-datetime="${datetime}">Delete</button>
-    </div>
-  </td>
-`;
+    </td>
+  `;
 
-tableBodyEl.appendChild(row);
+  tableBodyEl.appendChild(row);
 }
 
 // Update total amount
@@ -186,13 +185,12 @@ function handleAddTransaction(type) {
   dueDateInput.disabled = true;
 }
 
-
 // --- Delete Transaction ---
 document.addEventListener("click", (e) => {
-  if (e.target.classList.contains("delete-transaction")) {
+  if (e.target.classList.contains("swipe-delete-btn")) {
     const datetime = e.target.dataset.datetime;
 
-    if (confirm("⚠️ Are you sure you want to delete this transaction?")) {
+    if (confirm("Are you sure you want to delete this transaction?")) {
       let transactions = loadTransactionsFromStorage();
       const tx = transactions.find(t => t.datetime === datetime);
 
@@ -222,7 +220,6 @@ document.addEventListener("click", (e) => {
     }
   }
 });
-
 
 // --- Event Listeners ---
 document.addEventListener("DOMContentLoaded", loadTransactions);
@@ -280,7 +277,6 @@ document.addEventListener("click", (e) => {
   }
 });
 
-
 // --- Export Data ---
 document.getElementById("export-btn").addEventListener("click", () => {
   const transactions = JSON.parse(localStorage.getItem("transactions")) || [];
@@ -298,7 +294,6 @@ document.getElementById("export-btn").addEventListener("click", () => {
 
   URL.revokeObjectURL(url);
 });
-
 
 // --- Import Data ---
 document.getElementById("import-btn").addEventListener("click", () => {
@@ -332,7 +327,7 @@ document.getElementById("import-file").addEventListener("change", (event) => {
 
 // --- Reset Data ---
 document.getElementById("reset-btn").addEventListener("click", () => {
-  if (confirm("⚠️ Are you sure you want to reset all data? This cannot be undone.")) {
+  if (confirm("Are you sure you want to reset all data? This cannot be undone.")) {
     localStorage.removeItem("transactions");
     localStorage.removeItem("targets");
     alert("All data has been reset.");
@@ -365,33 +360,21 @@ document.addEventListener("touchend", () => {
   currentSwipe = null;
 });
 
-// Delete button click
-document.addEventListener("click", (e) => {
-  if (e.target.classList.contains("swipe-delete-btn")) {
-    const datetime = e.target.dataset.datetime;
-    if (confirm("⚠️ Delete this transaction?")) {
-      let transactions = loadTransactionsFromStorage();
-      const tx = transactions.find(t => t.datetime === datetime);
+// --- About Modal Logic (fixed IDs) ---
+const helpBtn = document.getElementById("help-btn");
+const aboutModal = document.getElementById("about-modal");
+const aboutCloseBtn = aboutModal.querySelector(".close-btn");
 
-      if (tx) {
-        // Adjust total
-        if (tx.isLoan === "true" || tx.isLoan === true) {
-          if (tx.amount > 0) currentTotal -= (tx.amount - (tx.paidAmount || 0));
-          else currentTotal -= (tx.amount + (tx.paidAmount || 0));
-        } else {
-          currentTotal -= tx.amount;
-        }
-
-        transactions = transactions.filter(t => t.datetime !== datetime);
-        saveTransactions(transactions);
-
-        updateTotal(currentTotal);
-        if (typeof updateAllProgressBars === "function") {
-          updateAllProgressBars(currentTotal);
-        }
-        loadTransactions();
-      }
-    }
-  }
+helpBtn.addEventListener("click", () => {
+  aboutModal.style.display = "block";
 });
 
+aboutCloseBtn.addEventListener("click", () => {
+  aboutModal.style.display = "none";
+});
+
+window.addEventListener("click", (e) => {
+  if (e.target === aboutModal) {
+    aboutModal.style.display = "none";
+  }
+});
