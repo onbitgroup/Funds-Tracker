@@ -79,7 +79,6 @@ th {
 .input-area {
   position: fixed;
   bottom: 0;
-  left: 0;
   width: 100%;
   max-width: 600px; /* same as container */
   display: grid;
@@ -87,7 +86,6 @@ th {
   background: #fff;
   border-top: 1px solid #ddd;
   box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
-  padding: 5px;
   z-index: 1000;
 }
 
@@ -121,7 +119,7 @@ input {
   display: none;
   position: fixed;
   z-index: 10;
-  left: 0; top: 0;
+  left: 0;
   width: 100%; height: 100%;
   background-color: rgba(0,0,0,0.5);
 }
@@ -262,15 +260,14 @@ input {
 }
 
 .remove-target-btn {
-  background: #dc3545;
-  color: white;
+  color: #dc3545;
   border: none;
   padding: 4px 8px;
   border-radius: 5px;
   cursor: pointer;
 }
 .remove-target-btn:hover {
-  background: #b02a37;
+  color: #771d25;
 }
 
 .progress-container {
@@ -297,12 +294,13 @@ input {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #007bff;
+  background: #6c757d;
   color: white;
-  padding: 10px;
   border-radius: 8px;
   cursor: pointer;
   user-select: none;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .dropdown-header i {
@@ -338,7 +336,7 @@ input {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #007bff;
+  background: #6c757d;
   color: white;
   padding: 10px 20px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
@@ -347,23 +345,32 @@ input {
   z-index: 1000;
 }
 
+/* Logo inside navbar */
+.nav-logo {
+  height: 40px;
+  width: 150px;
+  vertical-align: middle;
+}
+
 .navbar .logo {
   margin: 0;
   font-size: 18px;
   font-weight: bold;
+  margin-right: 5px;
 }
 
 .nav-buttons button {
   background: white;
-  color: #007bff;
+  color: #6c757d;
   border: none;
   padding: 6px 12px;
-  margin-left: 8px;
+  margin-right: 0px;
   border-radius: 5px;
   cursor: pointer;
   font-size: 14px;
   transition: background 0.3s ease;
 }
+
 
 .nav-buttons button:hover {
   background: #e6e6e6;
@@ -463,9 +470,8 @@ input {
 }
 
 .target-item.target-complete {
-  background: #28a745; /* green box */
-  color: white;
-  border: 2px solid #1e7e34;
+  background: #f8f9fa;
+  border: 2px solid #28a745;
 }
 
 .target-item.target-complete .progress-container {
@@ -473,14 +479,67 @@ input {
 }
 
 .target-item.target-complete .progress-bar {
-  background: #fff;
+  background: #28a745;
 }
 
 .target-item.target-complete .remove-target-btn {
-  background: #fff;
-  color: #28a745;
   font-weight: bold;
 }
 .target-item.target-complete .remove-target-btn:hover {
   background: #e6e6e6;
 }
+
+.date-wrapper {
+  position: relative;
+  grid-column: span 1;
+}
+
+.date-wrapper input[type="date"] {
+  width: 100%;
+  padding-right: 35px; /* leave space for icon */
+  box-sizing: border-box;
+}
+
+.date-wrapper .calendar-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #666;
+  pointer-events: none; /* so clicks go to the input */
+  font-size: 18px;
+  opacity: 0.6;
+}
+
+/* Show a faded icon when disabled */
+.date-wrapper input[disabled] + .calendar-icon {
+  color: #aaa;
+  opacity: 0.4;
+}
+
+/* Help button fixed below navbar */
+.help-btn {
+  position: fixed;
+  top: 70px; /* adjust depending on navbar height */
+  right: 20px;
+  background: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 5px;
+  height: 5px;
+  font-size: 15px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.help-btn:hover {
+  background: #444a4f;
+  transform: scale(1.1);
+}
+
