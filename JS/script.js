@@ -1,4 +1,4 @@
-s// script.js (Local Storage version)
+// script.js (Local Storage version)
 
 // HTML elements
 const totalAmountEl = document.getElementById('total-amount');
@@ -381,8 +381,6 @@ window.addEventListener("click", (e) => {
     aboutModal.style.display = "none";
   }
 });
-
-
 
 
 
