@@ -39,7 +39,9 @@ function renderTarget(target) {
   wrapper.innerHTML = `
     <div class="target-header">
       <span><strong>${target.name}</strong> — ${parseFloat(target.amount).toLocaleString()} /=</span>
-      <button class="remove-target-btn" data-id="${target.id}">Remove</button>
+      <button class="remove-target-btn" data-id="${target.id}">
+        <i class="fa-solid fa-trash-can"></i>
+      </button>
     </div>
     <div class="progress-container">
       <div class="progress-bar" id="progress-${target.id}" style="width:0%"></div>
@@ -123,9 +125,11 @@ function updateAllProgressBars(total) {
 // --- Event Listeners ---
 setTargetBtn.addEventListener("click", setTargetGoal);
 
+// ✅ Fix: use closest() so clicks on <i> inside the button still work
 document.addEventListener("click", (e) => {
-  if (e.target.classList.contains("remove-target-btn")) {
-    const targetId = e.target.dataset.id;
+  const removeBtn = e.target.closest(".remove-target-btn");
+  if (removeBtn) {
+    const targetId = removeBtn.dataset.id;
     removeTargetGoal(targetId);
   }
 });
