@@ -1,4 +1,4 @@
-// script.js (Local Storage version)
+s// script.js (Local Storage version)
 
 // HTML elements
 const totalAmountEl = document.getElementById('total-amount');
@@ -278,63 +278,20 @@ document.addEventListener("click", (e) => {
 });
 
 // --- Export Data ---
-document.getElementById("export-btn").addEventListener("click", async () => {
+document.getElementById("export-btn").addEventListener("click", () => {
   const transactions = JSON.parse(localStorage.getItem("transactions")) || [];
   const targets = JSON.parse(localStorage.getItem("targets")) || [];
+
   const data = { transactions, targets };
-  const json = JSON.stringify(data, null, 2);
-  const filename = "funds-tracker-backup.json";
 
-  // Helper: convert string -> base64 (UTF-8 safe)
-  function strToBase64(str) {
-    return btoa(unescape(encodeURIComponent(str)));
-  }
-
-  // If running inside the Android WebView wrapper with a JS bridge, use it.
-  try {
-    if (window.Android) {
-      // Try the most common method names found in WebView wrappers.
-      const b64 = strToBase64(json);
-
-      if (typeof Android.downloadBase64 === "function") {
-        Android.downloadBase64(filename, b64, "application/json");
-        alert("Backup saved to Downloads.");
-        return;
-      }
-      if (typeof Android.saveBase64 === "function") {
-        Android.saveBase64(filename, b64, "application/json");
-        alert("Backup saved to device.");
-        return;
-      }
-      if (typeof Android.saveFile === "function") {
-        // some bridges take (name, mime, base64)
-        Android.saveFile(filename, "application/json", b64);
-        alert("Backup saved to device.");
-        return;
-      }
-      if (typeof Android.saveText === "function") {
-        Android.saveText(filename, json);
-        alert("Backup saved to device.");
-        return;
-      }
-      // Last resort: share the text out (user can save to file manager / Drive)
-      if (typeof Android.shareText === "function") {
-        Android.shareText(json);
-        alert("Backup content shared. Choose a place to save it.");
-        return;
-      }
-    }
-  } catch (_) {
-    // fall through to browser path
-  }
-
-  // Browser/PWA fallback (works on the website)
-  const blob = new Blob([json], { type: "application/json" });
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
   const url = URL.createObjectURL(blob);
+
   const a = document.createElement("a");
   a.href = url;
-  a.download = filename;
+  a.download = "funds-tracker-backup.json"; // Suggests filename
   a.click();
+
   URL.revokeObjectURL(url);
 });
 
@@ -424,6 +381,7 @@ window.addEventListener("click", (e) => {
     aboutModal.style.display = "none";
   }
 });
+
 
 
 
