@@ -283,17 +283,11 @@ document.getElementById("export-btn").addEventListener("click", () => {
   const targets = JSON.parse(localStorage.getItem("targets")) || [];
 
   const data = { transactions, targets };
-
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
 
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "funds-tracker-backup.json"; // Suggests filename
-  a.click();
-
-  URL.revokeObjectURL(url);
+  saveAs(blob, "funds-tracker-backup.json"); // FileSaver.js handles compatibility
 });
+
 
 // --- Import Data ---
 document.getElementById("import-btn").addEventListener("click", () => {
@@ -378,3 +372,4 @@ window.addEventListener("click", (e) => {
     aboutModal.style.display = "none";
   }
 });
+
